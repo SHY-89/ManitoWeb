@@ -1,0 +1,14 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<h3>Main Pase</h3>
+{% if user.is_authenticated %}
+<form action="{% url 'accounts:sublogout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+{% else %}
+<a href="{% url 'accounts:sublogin' %}">로그인</a>
+<a href="{% url 'accounts:subsignup' %}">회원가입</a>
+{% endif %}
+{% endblock %}
