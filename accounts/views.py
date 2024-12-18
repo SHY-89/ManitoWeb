@@ -12,8 +12,6 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserC
 def index(request):
     return render(request, "accounts/index.html")
 
-
-# Create your views here.
 @require_http_methods(["GET", "POST"])
 def signup(request):
     if request.method == "POST":
@@ -71,3 +69,9 @@ def update(request, pk):
         context = {"form": form}
         return render(request, "accounts/update.html", context)
     return redirect("accounts:login")
+
+def kakao(request):
+    return render(request, 'accounts/kakao.html')
+
+def home(request):
+    return render(request, 'accounts/home.html')
