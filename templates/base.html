@@ -35,7 +35,7 @@
 <body>
   <canvas id="snowCanvas"></canvas>
   
-  <!-- 이미지 중앙 정렬 -->
+  {% comment %} <!-- 이미지 중앙 정렬 -->
   <div class="center-images">
     <img src="{% static 'images/snowbean_03.png' %}" alt="Image 2">
     <img src="{% static 'images/snowbean_04.png' %}" alt="Image 3">
@@ -43,7 +43,7 @@
     <img src="{% static 'images/a_couple.png' %}" alt="Image 5">
     <img src="{% static 'images/two_apples.png' %}" alt="Image 6">
     <img src="{% static 'images/two_snowbeans.png' %}" alt="Image 7">
-  </div>
+  </div> {% endcomment %}
 
   <script>
     const canvas = document.getElementById('snowCanvas');
