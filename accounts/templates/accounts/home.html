@@ -41,10 +41,11 @@
     top: 210px; /* 이미지 아래에 텍스트 위치 */
     left: 50%;
     transform: translateX(-50%);
-    font-size: 1.3rem;
-    color: #DCF8FFFF;
+    font-size: 1.6rem;
+    color: #C7EBF5FF;
     opacity: 0; /* 초기 상태에서 숨김 */
     transition: opacity 0.3s ease; /* 부드럽게 나타나도록 애니메이션 */
+    font-family: 'UhBee mysen', sans-serif;
   }
 
   .container img:hover + .hover-text {
@@ -55,7 +56,7 @@
 <div class="container">
   <h1>MY MANITO</h1>
   <img id="redirect-image" src="{% static 'images/snowbean_04.png' %}" alt="Snowbean">
-  <p class="hover-text">마니또 시작하기!</p>
+  <p class="hover-text">마니또 뽑으러 가기!</p>
 </div>
 <script>
   // 이미지 클릭 시 로그인 페이지로 리다이렉트
