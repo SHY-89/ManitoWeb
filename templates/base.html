@@ -8,12 +8,20 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       background-color: #471c1c;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
     }
+
     canvas {
-      display: block;
+      position: fixed; /* 화면 전체를 차지 */
+      top: 0;
+      left: 0;
+      width: 100%; /* 화면 너비 */
+      height: 100%; /* 화면 높이 */
+      z-index: -1; /* 뒤로 배치 */
     }
+
     .center-images {
       position: absolute;
       top: 50%;
@@ -24,16 +32,23 @@
       justify-content: center;
       align-items: center;
       gap: 20px; /* 이미지 간격 */
+      z-index: 1; /* 캔버스보다 앞으로 배치 */
     }
+
     .center-images img {
       max-width: 150px; /* 이미지 최대 크기 */
       max-height: 150px;
       border-radius: 10px; /* 이미지에 둥근 테두리 추가 */
     }
   </style>
+  {% block cssContent %}
+  {% endblock %}
+
 </head>
 <body>
   <canvas id="snowCanvas"></canvas>
+
+  {% block content %}
   
   {% comment %} <!-- 이미지 중앙 정렬 -->
   <div class="center-images">
@@ -44,6 +59,7 @@
     <img src="{% static 'images/two_apples.png' %}" alt="Image 6">
     <img src="{% static 'images/two_snowbeans.png' %}" alt="Image 7">
   </div> {% endcomment %}
+  {% endblock %}
 
   <script>
     const canvas = document.getElementById('snowCanvas');
@@ -126,5 +142,7 @@
     initSnowflakes();
     animateSnowfall();
   </script>
+  {% block scriptContent %}
+  {% endblock %}
 </body>
 </html>

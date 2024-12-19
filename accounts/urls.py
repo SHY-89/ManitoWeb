@@ -10,5 +10,5 @@ urlpatterns = [
     path("subupdate/<int:pk>/", views.update, name="subupdate"),
 
     path("kakao/", views.kakao, name="kakao"), 
-    path("", views.home, name="home"),    
+    path("", views.home, name="home"),
 ]

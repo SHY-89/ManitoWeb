@@ -1,5 +1,66 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% load static %}
 
+{% block content %}
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Yoon Childfundkorea DaeHan', sans-serif;
+  }
+
+  .container {
+    position: relative;
+    text-align: center;
+  }
+
+  .container img {
+    max-width: 300px; /* 이미지 크기 */
+    cursor: pointer;
+    pointer-events: auto; 
+    z-index: 10; /* 다른 요소 위에 표시 */
+  }
+
+  .container h1 {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #9afffb;
+    font-size: 2.5rem;
+    white-space: nowrap; /* 줄바꿈 방지 */
+    text-align: center;  /* 중앙 정렬 */
+  }
+
+  .hover-text {
+    position: absolute; /* 위치를 고정하여 레이아웃 변경 방지 */
+    top: 210px; /* 이미지 아래에 텍스트 위치 */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.3rem;
+    color: #DCF8FFFF;
+    opacity: 0; /* 초기 상태에서 숨김 */
+    transition: opacity 0.3s ease; /* 부드럽게 나타나도록 애니메이션 */
+  }
+
+  .container img:hover + .hover-text {
+    opacity: 1; /* 호버 시 텍스트 표시 */
+  }
+</style>
+
+<div class="container">
+  <h1>MY MANITO</h1>
+  <img id="redirect-image" src="{% static 'images/snowbean_04.png' %}" alt="Snowbean">
+  <p class="hover-text">마니또 시작하기!</p>
+</div>
+<script>
+  // 이미지 클릭 시 로그인 페이지로 리다이렉트
+  document.getElementById('redirect-image').addEventListener('click', function() {
+    window.location.href = "{% url 'accounts:sublogin' %}"; // Django URL 템플릿 태그 사용
+  });
+</script>
 {% endblock %}
