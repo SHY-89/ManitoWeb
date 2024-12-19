@@ -1,6 +1,76 @@
 {% extends "base.html" %} 
 
 {% block content %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'UhBeeKang-Ja', sans-serif;
+        color: #c6eeff;
+        font-size: 1.5rem;
+    }
+
+    form {
+        width: 100%;
+        max-width: 400px;
+        text-align: center; /* 왼쪽 정렬 */
+        background: none; /* 배경 색상 */
+        padding: 20px 30px;
+        border-radius: 10px; /* 테두리 둥글게 */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+    }
+
+
+    form input {
+        align-items: center;
+        display: inline-block;
+        width: calc(45% - 3px); /* 입력 필드 너비 (버튼 제외) */
+        padding: 6px; /* 내부 여백 */
+        margin-bottom: -2000px; /* 아래 여백 */
+        font-size: 1rem; /* 텍스트 크기 */
+        border: 1px solid #ccc; /* 테두리 */
+        border-radius: 5px; /* 테두리 둥글게 */
+        box-sizing: border-box; /* 패딩 포함 크기 */
+    }
+
+    form input:focus {
+        border-color: #2471A0FF; /* 포커스 시 테두리 색상 */
+        outline: none; /* 포커스 시 기본 아웃라인 제거 */
+    }
+
+    form button {
+        width: 20%;
+        background-color: #2d6a9c;
+        color: #ffffff;
+        border: none;
+        padding: 6px 3px;
+        font-size: .9rem;
+        font-weight: bold;
+        border-radius: 15px;
+        cursor: pointer;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        width: 60px;
+        font-family: UhBee Gmin2;
+    }
+
+    form button:hover {
+        background-color: #A2E0F8FF; /* 호버 시 버튼 색상 변경 */
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 확대 */
+        color: #0A3658FF;
+    }
+
+    form button:active {
+        background-color: #9CE5FFFF; /* 클릭 시 버튼 색상 */
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 클릭 시 그림자 축소 */
+        transform: translateY(2px); /* 클릭 시 살짝 아래로 이동 */
+    }
+
+  </style>
+
 <form action="{% url 'accounts:sublogin' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
