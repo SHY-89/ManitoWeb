@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>방 목록 및 생성</title>
+</head>
+<body>
+    <h1>방 목록</h1>
+    <ul>
+        {% for room in rooms %}
+        <li>{{ room.name }} - {{ room.room_type }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>새 방 만들기</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">방 만들기</button>
+    </form>
+</body>
+</html>

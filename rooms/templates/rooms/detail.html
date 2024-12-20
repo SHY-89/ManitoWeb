@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ room.name }}</title>
+</head>
+<body>
+    <h1>{{ room.name }}</h1>
+    <p>{{ room.get_room_type_display }}</p>
+    <p>마니또 공개 시간: {{ room.appear_data }}</p>
+    <p>인원 수: {{ room.headcount }}</p>
+
+    {% if room.image %}
+    <img src="{{ room.image.url }}" alt="{{ room.name }} 이미지">
+    {% else %}
+    <p>업로드된 이미지가 없습니다.</p>
+    {% endif %}
+</body>
+</html>
