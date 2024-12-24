@@ -11,4 +11,5 @@ urlpatterns = [
 
     path("kakao/", views.kakao, name="kakao"), 
     path("", views.home, name="home"),
+    path("game/", views.game, name="game"),
 ]

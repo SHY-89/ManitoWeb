@@ -7,7 +7,7 @@ from django.contrib.auth import (
     authenticate
 )
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserChangeForm
-
+from .models import Room
 
 def index(request):
     return render(request, "accounts/index.html")
@@ -76,3 +76,7 @@ def kakao(request):
 def home(request):
     return render(request, 'accounts/home.html')
 
+def game(request):
+    # 진행 중인 마니또 방 조회
+    rooms = Room.objects.filter(is_active=True)  # 진행 중인 방만 필터링
+    return render(request, 'game.html', {'rooms': rooms})
