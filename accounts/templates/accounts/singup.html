@@ -1,9 +1,119 @@
 {% extends "base.html" %} 
-
+{% load static %}
 {% block content %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: -60px 0px 0px 0px;
+        font-family: 'UhBeeKang-Ja', sans-serif;
+        color: #bbe7ff;
+        font-size: 1.2rem;
+        overflow-y: scroll;
+    }
+
+    .logo-image {
+        max-width: 220px; /* 이미지 크기 */
+        margin-bottom: -50px; /* 입력칸 사이 간격 */
+        cursor: pointer; /* 마우스 포인터 변경 */
+    }
+
+    .signup-container {
+        display: flex;
+        flex-direction: column; /* 요소를 세로로 쌓음 */
+        justify-content: flex-start; /* 컨테이너 내 상단 정렬 */
+        align-items: center; /* 가로 중앙 정렬 */
+        width: 100%;
+        max-width: 100px;
+        padding: 20px 30px;
+        background-color: #67779C;
+        border-radius: 10px;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column; /* 입력 필드와 버튼 세로 정렬 */
+        align-items: center; /* 입력 필드와 버튼을 가로 중앙 정렬 */
+        width: 100%;
+    }
+
+    form p {
+        margin: 8px 0px; /* 위아래 여백 줄이기 */
+    }
+
+    form label {
+        font-size: 1.35rem; /* 레이블 글씨 크기 */
+        margin-bottom: 5px; /* 레이블과 입력 필드 사이 간격 */
+        color: #B5E6FFFF; /* 레이블 색상 */
+    }
+
+    form input {
+        width: 60%;
+        padding: 8px;
+        margin-bottom: -10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        box-sizing: border-box;
+    }
+
+    form input:focus {
+        border-color: #2471A0FF;
+        outline: none;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* 버튼 간격 */
+        margin-top: 2px;
+    }
+
+    form button {
+        width: 70px;
+        height: 40px;
+        display: flex;
+        justify-content: center; /* 가로 정렬 */
+        align-items: center; /* 세로 정렬 */
+        background-color: #2d6a9c;
+        color: #ffffff;
+        margin: 25px 0px 0px 0px;
+        border: none;
+        padding: 10px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        border-radius: 17px;
+        cursor: pointer;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        font-family: 'UhBee Gmin2', sans-serif;
+    }
+
+    form button:hover {
+        background-color: #A2E0F8FF;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+        color: #0A3658FF;
+    }
+
+    form button:active {
+        background-color: #9CE5FFFF;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        transform: translateY(2px);
+    }
+
+</style>
+
+<!-- 상단 이미지 -->
+
 <form action="{% url 'accounts:subsignup' %}" method="post">
+    <img src="{% static 'images/snowbean_04.png' %}" alt="Snowbean" class="logo-image" onclick="location.href='{% url 'index' %}'">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">회원가입</button>
+    <div class="button-container">
+        <button type="button" onclick="window.history.back()">< < </button>
+        <button type="submit">Signup</button>
+    </div>
 </form>
 {% endblock %}
