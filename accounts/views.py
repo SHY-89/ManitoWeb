@@ -11,9 +11,11 @@ from django.contrib.auth import (
     authenticate
 )
 import requests
+import bcrypt
 from django.conf import settings
 from django.http import JsonResponse
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserChangeForm
+from .models import User
 
 
 def index(request):
@@ -113,6 +115,29 @@ def kakaos(request):
     kakao_account = kakao_data.get("kakao_account")
     if not kakao_account or not kakao_account.get("email"):
         return JsonResponse({"error": "등록하려면 이메일이 필요합니다."})
+    
+    email = kakao_account.get("email")
+    username = "kakao_"+email.split('@')[0]
+    kakao_profile = kakao_data.get("properties")
+    nickname = kakao_profile.get("nickname")
+    id = str(kakao_data.get("id"))
+    id = id.encode('utf-8')
+    password = bcrypt.hashpw(id, bcrypt.gensalt() ) 
+
+    user, created = User.objects.get_or_create(username=username, defaults={
+        'email':email, 'first_name': nickname
+    })
+
+    if created:
+        user.set_password(password)
+
+    user.save()
+    user =  authenticate(username=username, password=password)
+    if user:
+        # 인증된 사용자의 backend 명시
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth_login(request, user)
+    
     return redirect("index")
 
     
