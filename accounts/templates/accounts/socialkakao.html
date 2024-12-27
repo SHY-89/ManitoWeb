@@ -3,3 +3,11 @@
 <button type="button" onclick="location.href = '{% provider_login_url 'kakao' %}'">
     <img class = "kakao" src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" alt="" >
 </button>
+<br/>
+<button type="button" onclick="location.href = '{% provider_login_url 'google' %}'">
+    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" alt="Sign in with Google">
+</button>
+<br/>
+{% comment %} <button type="button" onclick="location.href = '{% provider_login_url 'naver' %}'">
+    <img src="https://static.nid.naver.com/oauth/small_g_in.PNG" alt="Sign in with Naver">
+</button> {% endcomment %}

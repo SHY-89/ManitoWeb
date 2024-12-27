@@ -81,7 +81,7 @@ def update(request, pk):
 
 
 @require_GET
-def socialkakao(request):
+def sociallogin(request):
     return render(request, 'accounts/socialkakao.html')
 
 
@@ -106,7 +106,7 @@ def kakaos(request):
     token = response.json()
     check_error = token.get("error")
     if check_error:
-        return redirect("socialkakao")
+        return redirect("accounts:sociallogin")
     
     access_token = token.get("access_token")
     kakao_request = requests.get("https://kapi.kakao.com/v2/user/me", headers={"Authorization": f"Bearer {access_token}"})
@@ -140,7 +140,59 @@ def kakaos(request):
     
     return redirect("index")
 
+
+@require_GET
+def google_callback(request):
+    code = request.GET.get('code')
+    google_token_api = "https://oauth2.googleapis.com/token"
     
+    # 요청 파라미터
+    data = {
+        "grant_type": "authorization_code",
+        "client_id": settings.GOOGLE_CLIENT_ID,
+        "client_secret": settings.GOOGLE_SECRET,
+        "redirect_uri": "http://127.0.0.1:8000/accounts/google/login/callback/",  # 등록된 리다이렉트 URI
+        "code": request.GET.get("code"),  # 인가 코드
+    }
+
+    # 요청 헤더
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+    }
+
+    response = requests.post(google_token_api, data=data, headers=headers)
+    token = response.json()
+    token = response.json()
+    check_error = token.get("error")
+    if check_error:
+        return redirect("accounts:sociallogin")
+    
+    access_token = token.get("access_token")
+    google_request = requests.get(f"https://www.googleapis.com/oauth2/v1/userinfo?access_token={access_token}")
+    google_data = google_request.json()
+
+    email = google_data.get("email")
+    username = "google_"+email.split('@')[0]
+    nickname = google_data.get("name")
+    id = str(google_data.get("id"))
+    id = id.encode('utf-8')
+    password = bcrypt.hashpw(id, bcrypt.gensalt() ) 
+
+    user, created = User.objects.get_or_create(username=username, defaults={
+        'email':email, 'first_name': nickname
+    })
+
+    if created:
+        user.set_password(password)
+
+    user.save()
+    user =  authenticate(username=username, password=password)
+    if user:
+        # 인증된 사용자의 backend 명시
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth_login(request, user)
+    
+    return redirect("index")
 
 
 def home(request):

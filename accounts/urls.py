@@ -9,7 +9,8 @@ urlpatterns = [
     path("subdelete/<int:pk>/", views.delete, name="subdelete"),
     path("subupdate/<int:pk>/", views.update, name="subupdate"),
 
-    path("kakao/", views.socialkakao, name="kakao"), 
+    path("login/", views.sociallogin, name="sociallogin"), 
     path("kakao/login/callback/", views.kakaos, name="kakaos"),
+    path('google/login/callback/', views.google_callback, name='google_callback'),
     path("", views.home, name="home"),
 ]
