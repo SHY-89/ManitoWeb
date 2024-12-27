@@ -162,7 +162,6 @@ def google_callback(request):
 
     response = requests.post(google_token_api, data=data, headers=headers)
     token = response.json()
-    token = response.json()
     check_error = token.get("error")
     if check_error:
         return redirect("accounts:sociallogin")
@@ -175,6 +174,60 @@ def google_callback(request):
     username = "google_"+email.split('@')[0]
     nickname = google_data.get("name")
     id = str(google_data.get("id"))
+    id = id.encode('utf-8')
+    password = bcrypt.hashpw(id, bcrypt.gensalt() ) 
+
+    user, created = User.objects.get_or_create(username=username, defaults={
+        'email':email, 'first_name': nickname
+    })
+
+    if created:
+        user.set_password(password)
+
+    user.save()
+    user =  authenticate(username=username, password=password)
+    if user:
+        # 인증된 사용자의 backend 명시
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth_login(request, user)
+    
+    return redirect("index")
+
+
+def naver_callback(request):
+    code = request.GET.get('code')
+    state = request.GET.get("state")
+    naver_token_api = "https://nid.naver.com/oauth2.0/token"
+    
+    # 요청 파라미터
+    data = {
+        "grant_type": "authorization_code",
+        "client_id": settings.NAVER_CLIENT_ID,
+        "client_secret": settings.NAVER_SECRET,
+        "state": state, 
+        "code": code,  # 인가 코드
+    }
+
+    # 요청 헤더
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+    }
+
+    response = requests.post(naver_token_api, data=data, headers=headers)
+    token = response.json()
+    check_error = token.get("error")
+    if check_error:
+        return redirect("accounts:sociallogin")
+    
+    access_token = token.get("access_token")
+    naver_request = requests.get("https://openapi.naver.com/v1/nid/me", headers={"Authorization": f"Bearer {access_token}"})
+    naver_json = naver_request.json()
+    naver_data = naver_json.get("response")
+
+    email = naver_data.get("email")
+    username = "naver_"+email.split('@')[0]
+    nickname = naver_data.get("name")
+    id = str(naver_data.get("id"))
     id = id.encode('utf-8')
     password = bcrypt.hashpw(id, bcrypt.gensalt() ) 
 

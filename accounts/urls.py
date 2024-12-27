@@ -12,5 +12,6 @@ urlpatterns = [
     path("login/", views.sociallogin, name="sociallogin"), 
     path("kakao/login/callback/", views.kakaos, name="kakaos"),
     path('google/login/callback/', views.google_callback, name='google_callback'),
+    path('naver/login/callback/', views.naver_callback, name='naver_callback'),
     path("", views.home, name="home"),
 ]
