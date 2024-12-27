@@ -1,5 +1,5 @@
 {% extends "base.html" %} 
-
+{% load static %}
 {% block content %}
 <style>
     body {
@@ -7,10 +7,16 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        margin: 0;
+        margin: -70px 0px 0px 0px;
         font-family: 'UhBeeKang-Ja', sans-serif;
         color: #bbe7ff;
         font-size: 1.5rem;
+    }
+
+    .logo-image {
+        max-width: 200px; /* 이미지 크기 */
+        margin-bottom: -55px; /* 입력칸 사이 간격 */
+        cursor: pointer; /* 마우스 포인터 변경 */
     }
 
     form {
@@ -20,9 +26,11 @@
         background: none; /* 배경 색상 */
         padding: 20px 30px;
         border-radius: 10px; /* 테두리 둥글게 */
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
     }
 
+    form p {
+        margin: 10px 1px; /* 위아래 여백 줄이기 */
+    }
 
     form input {
         align-items: center;
@@ -47,6 +55,7 @@
         color: #ffffff;
         border: none;
         padding: 6px 3px;
+        margin: 25px 0px 0px 0px;
         font-size: .9rem;
         font-weight: bold;
         border-radius: 15px;
@@ -72,8 +81,15 @@
   </style>
 
 <form action="{% url 'accounts:sublogin' %}" method="post">
+    <img src="{% static 'images/snowbean_04.png' %}" alt="Snowbean" class="logo-image" onclick="location.href='{% url 'index' %}'">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+    <div class="button-container">
+        <button type="button" onclick="window.history.back()">< < </button>
+        <button type="submit">Login</button>
+        <a href="{% url 'accounts:subsignup' %}">
+            <button type="button">Signup</button>
+        </a>
+    </div>
 </form>
 {% endblock %}

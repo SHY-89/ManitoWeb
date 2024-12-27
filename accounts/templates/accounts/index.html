@@ -1,14 +1,94 @@
 {% extends "base.html" %} 
-
+{% load static %}
 {% block content %}
-<h3>Main Page</h3>
-{% if user.is_authenticated %}
-<form action="{% url 'accounts:sublogout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-{% else %}
-<a href="{% url 'accounts:sublogin' %}">로그인</a>
-<a href="{% url 'accounts:subsignup' %}">회원가입</a>
-{% endif %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: -50px;
+        font-family: 'UhBeeKang-Ja', sans-serif;
+        color: #bbe7ff; /* 글씨색 통일 */
+        font-size: 1.5rem; /* 전체 글씨 크기 */
+    }
+
+    .logo-image {
+        max-width: 250px; /* 이미지 크기 */
+        margin-bottom: -55px; /* 입력칸 사이 간격 */
+        cursor: pointer; /* 마우스 포인터 변경 */
+    }
+
+    .door-open {
+        max-width: 300px; /* 이미지 크기 */
+        cursor: pointer;
+        margin: 90px -5px -8px 8px;
+    }
+
+    .index-container {
+        text-align: center;
+        padding: 30px 40px;
+        border-radius: 10px;
+    }
+
+    h3 {
+        font-size: 2rem; /* 제목 크기 */
+        margin-bottom: 20px;
+        color: #9afffb; /* 제목 색상 */
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* 버튼 간격 */
+        margin-top: 20px;
+    }
+
+    .button-container a,
+    .button-container button {
+        background-color: #2d6a9c;
+        color: #ffffff;
+        text-decoration: none;
+        border: none;
+        padding: 10px 15px;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 16px;
+        cursor: pointer;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        font-family: 'UhBee Gmin2', sans-serif;
+    }
+
+    .button-container a:hover,
+    .button-container button:hover {
+        background-color: #A2E0F8FF;
+        color: #0A3658FF;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .button-container a:active,
+    .button-container button:active {
+        background-color: #9CE5FFFF;
+        transform: translateY(2px);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }ㅐ
+</style>
+
+<div class="index-container">
+    {% if user.is_authenticated %}
+    <!-- 로그인된 상태 -->
+    <div class="button-container">
+        <img src="{% static 'images/red_door_open.png' %}" alt="Mymanito-door" class="door-open" 
+             onclick="location.href='{% url 'accounts:subupdate' user.pk %}'">
+    </div>
+    {% else %}
+    <!-- 비로그인 상태 -->
+    <img src="{% static 'images/snowbean_04.png' %}" alt="Mymanito-Logo" class="logo-image" onclick="location.href='{% url 'accounts:sublogin' %}'">
+    <div class="button-container">
+        <a href="{% url 'accounts:sublogin' %}">Login</a>
+        <a href="{% url 'accounts:subsignup' %}">Signup</a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

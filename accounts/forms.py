@@ -31,17 +31,21 @@ class CustomUserCreationForm(UserCreationForm):
         model = get_user_model()
         fields = [
             "username", 
-            "first_name",
-            "last_name",
             "email",
         ]
 
         labels = {
             "username": "아이디",
-            "first_name": "성함",
-            "last_name": "닉네임",
             "email": "email",
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 'username' 필드의 도움말 텍스트 제거
+        self.fields["username"].help_text = None
+        self.fields["password1"].help_text = None
+        self.fields["password2"].help_text = None
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
@@ -57,7 +61,7 @@ class CustomUserChangeForm(UserChangeForm):
         model = get_user_model()
         fields = ("first_name", "last_name", "email")
         labels = {
-            "first_name": "성함",
+            "first_name": "이름",
             "last_name": "닉네임",
             "email": "email",
         }
