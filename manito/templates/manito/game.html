@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: UhBee Miwan;
+        color: #d4f0ff;
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .game-container {
+        text-align: center;
+        padding: 30px 40px;
+        border-radius: 10px;
+        max-width: 400px;
+        width: 56%;
+        margin-bottom: 129px;
+    }
+
+    .game-container h1 {
+        font-size: 2rem;
+        color: #9afffb;
+        margin-bottom: 20px;
+    }
+
+    .room-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .room-list li {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #A2E0F8FF;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .room-list li:hover {
+        background-color: #9CE5FFFF;
+    }
+
+    .no-room {
+        margin-top: -60px;
+        color: #d3f6ff;
+        font-size: 1.8rem;
+    }
+
+    .logo-container img {
+        display: block;
+        margin: 0 auto 20px auto;
+        width: 200px;
+    }
+
+    .button-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .button-container a {
+        background-color: #d2b0c0;
+        color: #2c1620;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 1.4rem;
+        font-weight: bold;
+        border-radius: 16px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
+        width: 20px;
+    }
+    
+
+    .button-container a:hover {
+        background-color: #ACDEFFFF;
+        color: #0A3658FF;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<div class="game-container">
+    {% if ongoing_rooms %}
+    <ul>
+        {% for room in ongoing_rooms %}
+        <li>
+            <a href="{% url 'accounts:room_detail' room.id %}">{{ room.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="logo-container">
+        <img src="{% static 'images/snowbean_04.png' %}" alt="마니또 로고">
+    </div>
+    <p class="no-room">아직 진행중인 마니또가 없어요</p>
+    <div class="button-container">
+        <a href="{% url 'accounts:create_room' %}" class="btn">마니또 방 만들기</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

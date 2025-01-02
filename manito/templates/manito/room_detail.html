@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'UhBeeKang-Ja', sans-serif;
+        color: #bbe7ff;
+        font-size: 1.2rem;
+    }
+
+    .room-detail-container {
+        background-color: #67779C;
+        padding: 30px 40px;
+        border-radius: 10px;
+        text-align: center;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .room-detail-container h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #9afffb;
+    }
+
+    .room-detail-container p {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+
+    .room-detail-container .button-container {
+        margin-top: 20px;
+    }
+
+    .room-detail-container .button-container button {
+        background-color: #2d6a9c;
+        color: #ffffff;
+        text-decoration: none;
+        border: none;
+        padding: 10px 15px;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        font-family: 'UhBee Gmin2', sans-serif;
+        margin: 5px;
+    }
+
+    .room-detail-container .button-container button:hover {
+        background-color: #A2E0F8FF;
+        color: #0A3658FF;
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .room-detail-container .button-container button:active {
+        background-color: #9CE5FFFF;
+        transform: translateY(2px);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="room-detail-container">
+    <h1>{{ room.name }}</h1>
+    <p><strong>미션:</strong> {{ room.mission }}</p>
+    <p><strong>매니또 공개 일시:</strong> {{ room.reveal_date|date:"Y-m-d H:i" }}</p>
+    <p><strong>참여 인원:</strong> {{ room.participant_count }}명</p>
+    <p><strong>생성 시간:</strong> {{ room.created_at|date:"Y-m-d H:i" }}</p>
+
+    <div class="button-container">
+        <button onclick="location.href='{% url 'accounts:game' %}'">돌아가기</button>
+        <button onclick="alert('초대 링크 복사 완료!')">초대 링크 복사</button>
+    </div>
+</div>
+{% endblock %}
