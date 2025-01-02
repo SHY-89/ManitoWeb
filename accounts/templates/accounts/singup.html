@@ -50,13 +50,17 @@
     }
 
     form input {
-        width: 60%;
+        width: auto; /* 기본 너비를 내용에 맞게 설정 */
+        min-width: 200px; /* 최소 너비 */
+        max-width: 90%; /* 최대 너비 */
         padding: 8px;
         margin-bottom: -10px;
-        font-size: 1rem;
+        font-size: 1.1rem;
         border: 1px solid #ccc;
         border-radius: 12px;
         box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
     }
 
     form input:focus {
@@ -116,4 +120,21 @@
         <button type="submit">Signup</button>
     </div>
 </form>
+
+<script>
+    document.querySelectorAll('form input').forEach(input => {
+        input.addEventListener('input', function () {
+            const tempSpan = document.createElement('span');
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.position = 'absolute';
+            tempSpan.style.whiteSpace = 'nowrap';
+            tempSpan.style.font = window.getComputedStyle(this).font;
+            tempSpan.textContent = this.value || this.placeholder;
+            document.body.appendChild(tempSpan);
+            this.style.width = `${Math.max(tempSpan.offsetWidth + 20, 200)}px`;
+            document.body.removeChild(tempSpan);
+        });
+    });
+</script>
+
 {% endblock %}

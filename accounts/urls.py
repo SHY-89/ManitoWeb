@@ -10,6 +10,7 @@ urlpatterns = [
     path("subupdate/<int:pk>/", views.update, name="subupdate"),
 
     path("kakao/", views.kakao, name="kakao"), 
-    path("", views.home, name="home"),
     path("game/", views.game, name="game"),
+    path("room/<int:room_id>/", views.room_detail, name="room_detail"),
+    path("create-room/", views.create_room, name="create_room"),
 ]

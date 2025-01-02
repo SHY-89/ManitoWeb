@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth import (
     login as auth_login,
@@ -8,9 +8,13 @@ from django.contrib.auth import (
 )
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserChangeForm
 from .models import Room
+from django.contrib import messages
 
 def index(request):
     return render(request, "accounts/index.html")
+
+def home(request):
+    return render(request, 'accounts/home.html')
 
 @require_http_methods(["GET", "POST"])
 def signup(request):
@@ -73,10 +77,3 @@ def update(request, pk):
 def kakao(request):
     return render(request, 'accounts/kakao.html')
 
-def home(request):
-    return render(request, 'accounts/home.html')
-
-def game(request):
-    # 진행 중인 마니또 방 조회
-    rooms = Room.objects.filter(is_active=True)  # 진행 중인 방만 필터링
-    return render(request, 'game.html', {'rooms': rooms})

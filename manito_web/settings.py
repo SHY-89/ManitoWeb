@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.kakao',
 
     "accounts",
+    "manito",
 ]
 
 MIDDLEWARE = [
