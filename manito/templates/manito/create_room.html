@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 70px 0px 70px 0px;
+        font-family: 'UhBee Miwan', sans-serif;
+        color: #DAF2FFFF;
+        font-size: 1.5rem;
+        overflow-y: scroll;
+    }
+
+    .form-container {
+        padding: 30px 40px;
+        border-radius: 10px;
+        text-align: left;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .form-container h1 {
+        text-align: center; /* 중앙 정렬 */
+        font-size: 2rem;
+        margin-bottom: 40px;
+        margin-top: 150px;
+        color: #B8DDF5FF;
+    }
+
+    .form-container label {
+        display: block;
+        text-align: left;
+        margin-bottom: 10px;
+        font-size: 1.6rem;
+        color: #dcf3ff;
+    }
+
+    .form-container input, .form-container select, .form-container textarea {
+        width: 75%;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-family: UhBee Miwan;
+    }
+
+    .form-container button {
+        background-color: #afcee9;
+        color: #182d45;
+        padding: 0px 9px;
+        font-size: 1.3rem;
+        border: none;
+        border-radius: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-family: UhBee Miwan;
+    }
+
+    .form-container button:hover {
+        background-color: #30587AFF;
+        color: #D1EBFFFF;
+    }
+
+    .mission-list {
+        margin-bottom: 20px;
+    }
+
+    .mission-list textarea {
+        margin-bottom: 10px;
+    }
+
+    .mission-buttons-inline {
+        display: inline-flex;
+        margin-left: 10px; /* 라벨 오른쪽 간격 */
+        vertical-align: middle; /* 라벨과 버튼 높이 맞춤 */
+    }
+
+    .mission-button {
+        background-color: #B7D9F7FF;
+        color: #182d45;
+        padding: 5px 10px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 5px; /* 버튼 간 간격 */
+    }
+
+    .mission-button:hover {
+        background-color: #30587AFF;
+        color: #D1EBFFFF;
+    }
+
+    .recommendation-container {
+        display: none;
+        margin-top: -90px;
+        background-color: #0f161e73;
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: left;
+    }
+    
+    .recommendation-container ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        font-size: 1.7rem; /* 글씨 크기 작게 */
+        color: #FFFFFFFF; /* 글씨 색상 하얀색 */
+        font-family: UhBee mysen;
+        margin: -11px 7px 0px 3px;
+    }
+
+</style>
+
+<div class="form-container">
+    <h1>마니또 방 만들기</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- 방 선택하기 -->
+        <label for="room_type">방 선택하기</label>
+        <select id="room_type" name="room_type" required>
+            <option value="" disabled selected>방 유형을 선택하세요</option>
+            <option value="칭찬마니또">칭찬마니또</option>
+            <option value="선물마니또">선물마니또</option>
+        </select>
+        
+        <!-- 미션 설정 -->
+        <label>미션 설정하기
+            <div class="mission-buttons-inline">
+                <button type="button" id="add-mission" class="mission-button">+</button>
+                <button type="button" id="remove-mission" class="mission-button">-</button>
+            </div>
+        </label>
+        <div class="mission-list" id="mission-list">
+            <!-- 기본 3개의 미션 필드 -->
+            <textarea name="missions[]" placeholder="내 마니또 자리에 몰래 간식 두고오기" required></textarea>
+            <textarea name="missions[]" placeholder="몰래 쪽지써서 붙여놓고 오기" required></textarea>
+            <textarea name="missions[]" placeholder="진심으로 외모 칭찬하기" required></textarea>
+        </div>     
+
+        <!-- 추천 예시 목록 -->
+        <div class="recommendation-container" id="recommendation-container">
+            <ul id="recommendation-list">
+                <!-- 추천 목록은 JavaScript로 추가 -->
+            </ul>
+        </div>
+        <button type="button" id="show-recommendations" class="recommendation-button">추천 예시</button>
+
+        <!-- 매니또 공개 일시 -->
+        <label for="reveal_date">매니또 공개 일시</label>
+        <input type="datetime-local" id="reveal_date" name="reveal_date" required>
+        
+        <!-- 참여 인원수 설정 -->
+        <label for="participant_count">참여 인원수 설정</label>
+        <input
+            type="number"
+            id="participant_count"
+            name="participant_count"
+            min="3"  
+            max="50"
+            placeholder="최소 3명 이상"
+            required>
+
+        <button type="submit" class="create-room-button">방 만들기</button> 
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const missionList = document.getElementById('mission-list');
+        const addMissionButton = document.getElementById('add-mission');
+        const removeMissionButton = document.getElementById('remove-mission');
+        const recommendationButton = document.getElementById('show-recommendations');
+        const recommendationContainer = document.getElementById('recommendation-container');
+        const recommendationList = document.getElementById('recommendation-list');
+
+        let missionCount = 3; // 기본 3개
+
+        // 미션 추가 버튼 동작
+        addMissionButton.addEventListener('click', () => {
+            if (missionCount < 10) { // 최대 10개 제한
+                const newMission = document.createElement('textarea');
+                newMission.name = 'missions[]';
+                newMission.placeholder = '미션 내용을 입력하세요';
+                newMission.required = true;
+                missionList.appendChild(newMission);
+                missionCount++;
+            } else {
+                alert('최대 10개의 미션만 추가할 수 있습니다.');
+            }
+        });
+
+        // 미션 삭제 버튼 동작
+        removeMissionButton.addEventListener('click', () => {
+            if (missionCount > 3) { // 최소 3개 제한
+                missionList.removeChild(missionList.lastElementChild);
+                missionCount--;
+            } else {
+                alert('최소 3개의 미션은 필요합니다.');
+            }
+        });
+
+        // 추천 예시 버튼 동작
+        recommendationButton.addEventListener('click', () => {
+            if (recommendationContainer.style.display === 'none') {
+                recommendationContainer.style.display = 'block';
+            } else {
+                recommendationContainer.style.display = 'none';
+            }
+        });
+
+        // 추천 예시 목록 추가
+        const recommendations = [
+            '동료 몰래 책상 정리해주기',
+            '응원 메모 붙이기',
+            '만원 이하 작은 선물 몰래 주기',
+            '만날 때 웃으며 인사하기',
+            '맛있는 간식 나눠먹기',
+            '좋은 글귀 적어서 쪽지 붙여놓기',
+            '마니또가 좋아하는 커피 한 잔 사주기',
+            '내가 좋아하는 음악 추천하기',
+            '마니또에게 고마웠던 일 적어주기 (예: 엘리베이터 잡아줘서 고마웠어요)',
+            '내 마니또가 좋아하는 말 해주기 (멤버 정보에서 확인 가능!)'
+        ];
+
+        recommendations.forEach(mission => {
+            const listItem = document.createElement('li');
+            listItem.textContent = mission;
+            recommendationList.appendChild(listItem);
+        });
+    });
+</script>
+{% endblock %}

@@ -25,7 +25,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-     'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.naver',
 
     "accounts",
     "manito",
@@ -146,8 +148,22 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SITE_ID = 1
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    }
+}
+
+KAKAO_REST_API_KEY = env("KAKAO_REST_API_KEY")
+KAKAO_CALLBACK_URI = env("KAKAO_CALLBACK_URI")
+GOOGLE_CLIENT_ID= env("GOOGLE_CLIENT_ID")
+GOOGLE_SECRET= env("GOOGLE_SECRET")
+NAVER_CLIENT_ID= env("NAVER_CLIENT_ID")
+NAVER_SECRET= env("NAVER_SECRET")
+
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = 'index'
+# LOGOUT_REDIRECT_URL = 'index'
 ACCOUNT_LOGOUT_ON_GET = True 
