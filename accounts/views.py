@@ -18,8 +18,9 @@ import bcrypt
 from django.conf import settings
 from django.http import JsonResponse
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, CustomUserChangeForm
-from .models import Room, User
+from .models import User
 from django.contrib import messages
+from manito.models import Room
 
 
 def index(request):

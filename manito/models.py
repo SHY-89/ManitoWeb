@@ -1,12 +1,18 @@
 from django.db import models
+from django.conf import settings
 
 class Room(models.Model):
-    name = models.CharField(max_length=100)  # 방 이름
-    mission = models.TextField()  # 미션 내용
-    reveal_date = models.DateTimeField()  # 매니또 공개 일시
-    participant_count = models.PositiveIntegerField()  # 참여 인원 수
-    is_active = models.BooleanField(default=True)  # 진행 중 여부
-    created_at = models.DateTimeField(auto_now_add=True)  # 생성 시간
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="owned_rooms",
+    )
+    name = models.CharField(max_length=100)
+    mission = models.TextField()
+    reveal_date = models.DateTimeField()
+    participant_count = models.PositiveIntegerField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
